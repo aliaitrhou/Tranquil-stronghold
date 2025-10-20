@@ -890,6 +890,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-icons@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "react-icons@npm:5.5.0"
+  peerDependencies:
+    react: "*"
+  checksum: cbd74f4b7982e6e18d59798a6b578268c8eb0909d78d87bcf9b25f99b3e544fd189a76551cb5e770d17f154a60b668551aee108aaf8471309b23f7af3b2c5b07
+  languageName: node
+  linkType: hard
+
 "react@npm:19.1.0":
   version: 19.1.0
   resolution: "react@npm:19.1.0"
@@ -1009,6 +1018,7 @@ __metadata:
     next: 15.5.6
     react: 19.1.0
     react-dom: 19.1.0
+    react-icons: ^5.5.0
     tailwindcss: ^4
     typescript: ^5
   languageName: unknown
