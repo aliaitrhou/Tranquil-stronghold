@@ -1,126 +1,100 @@
+
+
+import AnimatedSection from "@/components/animations/animated-section"
+import { AnimatedContactInfo, AnimatedContactInfoItem } from "@/components/animations/animated-contact-info"
+import { ExternalLinkItem } from "@/components/footer"
 import { openSans } from "@/fonts"
+import { BiMailSend } from "react-icons/bi"
+import { FaCompass } from "react-icons/fa"
+import { IoLocation, IoMail } from "react-icons/io5"
+import { PiInstagramLogoFill } from "react-icons/pi"
 
 const Contact = () => {
   return (
-    <div className={`max-w-5xl mx-auto py-20 ${openSans.className}`}>
-
-      <div className="m-4 mx-auto max-w-xl text-center">
-        <h1 className="text-4xl font-bold mb-4">
-          Get in Touch.
-        </h1>
-        <p className="mb-4">We would love to hear from you! Whether you have questions, feedback, or want to get involved, feel free to reach out to us.</p>
+    <div className={`w-full ${openSans.className}`}>
+      <div className="max-w-2xl mx-auto pt-16">
+        <AnimatedSection classNames="my-1 max-w-xl mx-auto text-center">
+          <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3">
+            <BiMailSend className="text-4xl sm:text-5xl md:text-6xl " />
+            <span>
+              Get in Touch.
+            </span>
+          </div>
+          <p className="px-4 sm:px-2 text-sm sm:text-lg">We would love to hear from you! Whether you have questions, feedback, or want to get involved, feel free to reach out to us.</p>
+        </AnimatedSection>
+        <AnimatedSection delay={0.4} classNames="w-full md:max-w-2xl mx-auto">
+          <form className="px-4 space-y-3 py-8">
+            <div className="flex flex-row items-center gap-4">
+              <div className="w-full">
+                <label htmlFor="name" className="block text-sm font-medium mb-1">Name</label>
+                <input type="text" id="name" name="name" className="w-full border border-gray-300 p-3" required />
+              </div>
+              <div className="w-full">
+                <label htmlFor="lastName" className="block text-sm font-medium mb-1">Last Name</label>
+                <input type="text" id="lastName" name="lastName" className="w-full border border-gray-300 p-3" required />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
+              <input type="email" id="email" name="email" className="w-full border border-gray-300 p-3" required />
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium mb-1">Message</label>
+              <textarea id="message" name="message" rows={5} className="resize-none w-full border border-gray-300 p-3" required></textarea>
+            </div>
+            <div className="w-full text-end">
+              <button type="submit"
+                className="border border-gray-300 gap-2 bg-white px-4 py-2 font-semibold text-blue-500 hover:border-blue-500 hover:text-white  hover:bg-blue-500"
+              >Send Message</button>
+            </div>
+          </form>
+        </AnimatedSection>
       </div>
-      <div className="w-full flex flex-row items-center justify-between gap-8">
-        <form className="space-y-3 py-8 px-2 rounded-md">
-          <div className="flex flex-row items-center gap-4">
-            <div className="w-full">
-              <label htmlFor="name" className="block text-sm font-medium mb-1">Name</label>
-              <input type="text" id="name" name="name" className="w-full border border-gray-300 rounded-md p-2" required />
-            </div>
-            <div className="w-full">
-              <label htmlFor="lastName" className="block text-sm font-medium mb-1">Last Name</label>
-              <input type="text" id="lastName" name="lastName" className="w-full border border-gray-300 rounded-md p-2" required />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
-            <input type="email" id="email" name="email" className="w-full border border-gray-300 rounded-md p-2" required />
-          </div>
-          <div>
-            <label htmlFor="message" className="block text-sm font-medium mb-1">Message</label>
-            <textarea id="message" name="message" rows={5} className="resize-none w-full border border-gray-300 rounded-md p-2" required></textarea>
-          </div>
-          <button type="submit" className="bg-blue-500 border border-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-600">Send Message</button>
-        </form>
-        <div className="h-full border-l-4 pl-8 pr-4 w-full max-w-sm space-y-6">
-          <h3 className="font-bold text-xl">Contact Information</h3>
-          <div className="contact-item">
-            <h4 className="font-semibold text-lg">Email</h4>
-            <a href="mailto:admin@steadfasthaven.com">admin@steadfasthaven.com</a>
-          </div>
-          <div className="contact-item">
-            <h4
-              className="font-semibold text-lg"
-            >Instagram</h4>
-            <a href="https://instagram.com/thesfhaven" target="_blank">@thesfhaven</a>
-          </div>
-          <div className="contact-item">
-            <h4
-              className="font-semibold text-lg"
-            >Location</h4>
+
+      <AnimatedContactInfo classNames="w-full bg-gray-100/70 my-12 py-3">
+        <div className="max-w-4xl mx-auto text-center flex flex-row items-center justify-around flex-wrap gap-2 py-6 text-xs sm:text-sm">
+          <AnimatedContactInfoItem delay={0.2}>
+            <p className="flex items-center gap-1 font-semibold">
+              <IoMail className="size-5" />
+              <span>
+                Email:
+              </span>
+            </p>
+            <ExternalLinkItem href="mailto:admin@steadfasthaven.com" label="admin@steadfasthaven.com" />
+          </AnimatedContactInfoItem>
+
+          <AnimatedContactInfoItem delay={0.6}>
+            <p className="flex items-center gap-1 font-semibold">
+              <PiInstagramLogoFill className="size-5" />
+              <span>
+                Instagram:
+              </span>
+            </p>
+            <ExternalLinkItem href="https://instagram.com/thesfhaven" label="@thesfhaven" />
+          </AnimatedContactInfoItem>
+
+          <AnimatedContactInfoItem delay={0.9}>
+            <p className="flex items-center gap-1 font-semibold">
+              <IoLocation className="size-5" />
+              <span>
+                Location:
+              </span>
+            </p>
             <p>Memphis, Tennessee</p>
-          </div>
-          <div className="contact-item">
-            <h4
-              className="font-semibold text-lg"
-            >Youth Program Enrollment</h4>
-            <p>Coming soon! Check back for enrollment information.</p>
-          </div>
+          </AnimatedContactInfoItem>
+          <AnimatedContactInfoItem delay={1}>
+            <p className="flex items-center gap-2 font-semibold">
+              <FaCompass className="size-5" />
+              <span>
+                Youth Program Enrollment:
+              </span>
+            </p>
+            <span className="text-gray-500 italic">
+              Coming soon!
+            </span>
+          </AnimatedContactInfoItem>
         </div>
-      </div>
-
-
-      {/* <div className="max-w-5xl mx-auto flex items-center justify-between pt-2 pb-4 font-light"> */}
-      {/*   <div className="leading-relaxed"> */}
-      {/*     <span className="text-black font-semibold">Social Links</span> */}
-      {/*     <div className='grid grid-cols-2 gap-6'> */}
-      {/*       <div> */}
-      {/*         <p> */}
-      {/*           <a href="https://instagram.com/thesfhaven" target="_blank" className="hover:text-black transition-colors"> */}
-      {/*             Instagram */}
-      {/*           </a> */}
-      {/*         </p> */}
-      {/*         <p> */}
-      {/*           <a href="https://x.com/steadfasthaven1" target="_blank" className="hover:text-black transition-colors"> */}
-      {/*             X (Twitter) */}
-      {/*           </a> */}
-      {/*         </p> */}
-      {/*       </div> */}
-      {/*       <div> */}
-      {/**/}
-      {/*         <p> */}
-      {/*           <a href="https://www.tiktok.com/@steadfasthaven" target="_blank" className="hover:text-black transition-colors"> */}
-      {/*             TikTok */}
-      {/*           </a> */}
-      {/*         </p> */}
-      {/*         <p> */}
-      {/*           {/* https://www.youtube.com/@SteadfastHaven */}
-      {/*           <a href="https://www.youtube.com/@SteadfastHaven" target="_blank" className="hover:text-black transition-colors"> */}
-      {/*             YouTube */}
-      {/*           </a> */}
-      {/*         </p> */}
-      {/*       </div> */}
-      {/**/}
-      {/*     </div> */}
-      {/*   </div> */}
-      {/**/}
-      {/**/}
-      {/*   <div className="leading-relaxed"> */}
-      {/*     <span className="text-black font-semibold">Get in touch</span> */}
-      {/*     <div> */}
-      {/*       <p> */}
-      {/*         Email:{' '} */}
-      {/*         <a href="mailto:admin@steadfasthaven.com" className="hover:text-black"> */}
-      {/*           admin@steadfasthaven.com */}
-      {/*         </a> */}
-      {/*       </p> */}
-      {/*       <p> */}
-      {/*         <Link href="/contact" className="hover:text-black"> */}
-      {/*           Contact Us */}
-      {/*         </Link> */}
-      {/*       </p> */}
-      {/*     </div> */}
-      {/*   </div> */}
-      {/**/}
-      {/*   <div className="text-neutral-600"> */}
-      {/*     <span className="text-black font-semibold">Programs</span> */}
-      {/*     <p> */}
-      {/*       Youth Program Enrollment:{' '} */}
-      {/*     </p> */}
-      {/*     <span className="text-neutral-400 italic">Coming soon</span> */}
-      {/*   </div> */}
-      {/* </div> */}
-      {/**/}
+      </AnimatedContactInfo>
     </div>
   )
 }
