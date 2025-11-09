@@ -1,6 +1,6 @@
 "use client"
 
-import AnimatedSection from "@/components/animations/animated-section";
+import { AnimatedSection, AnimatedSectionH } from "@/components/animations/animated-section";
 import { AnimatedContactInfoItem } from "@/components/animations/animated-contact-info";
 import Card from "@/components/card";
 import { inter, openSans } from "@/fonts";
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
       <div className='flex-1 min-h-0 mx-auto px-3 w-full flex flex-row items-center justify-center mb-4'>
-        <AnimatedSection classNames="self-start max-w-3xl mx-auto pt-16 space-y-6">
+        <AnimatedSection delay={0.6} classNames="self-start max-w-3xl mx-auto pt-16 space-y-6">
           <h2 className="text-5xl font-bold text-center">
             Empowering Youth Through
             Art, Film & Music
@@ -33,14 +33,14 @@ export default function Home() {
         </AnimatedSection>
       </div>
 
-      <div
-        className="w-full overflow-hidden bg-gradient-to-br from-gray-50 to-teal-50 rounded-t-[23rem] md:rounded-t-[20rem]  lg:rounded-t-[50%] border-t border-t-neutral-300 pt-10 pb-12 text-center"
+      <AnimatedSectionH
+        classNames="w-full overflow-hidden bg-gradient-to-br from-gray-50 to-teal-50 rounded-t-[23rem] md:rounded-t-[20rem]  lg:rounded-t-[50%] border-t border-t-neutral-300 pt-10 pb-12 text-center"
       >
         <section className="w-full mx-auto overflow-hidden py-1 px-2 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <a target="_blank" href={"https://givebutter.com/auElnc"} className="inline-flex border border-neutral-300 items-center gap-2 bg-white px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-blue-600 mb-6 hover:underline hover:underline-blue-500">
               <FaDonate className="w-4 h-4" />
-              Donate or Volunteer
+              Donate/Volunteer
             </a>
             <h2 className="text-4xl font-bold mb-4">Our Mession</h2>
             <p className="text-gray-600 mb-8 max-w-xl px-6  mx-auto font-openSans">
@@ -81,7 +81,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </div>
+      </AnimatedSectionH>
     </section >
   );
 }

@@ -10,7 +10,7 @@ interface AnimatedSectionProps {
 }
 
 
-const AnimatedSection = ({ children, classNames, delay }: AnimatedSectionProps) => {
+export const AnimatedSection = ({ children, classNames, delay }: AnimatedSectionProps) => {
   return (
     <motion.div
       className={classNames}
@@ -23,4 +23,18 @@ const AnimatedSection = ({ children, classNames, delay }: AnimatedSectionProps) 
   )
 }
 
-export default AnimatedSection;
+
+
+export const AnimatedSectionH = ({ children, classNames, delay }: AnimatedSectionProps) => {
+  return (
+    <motion.div
+      className={classNames}
+      initial={{ opacity: 0, translateY: 80 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ duration: 0.7 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
