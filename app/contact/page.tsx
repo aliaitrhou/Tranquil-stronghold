@@ -1,6 +1,6 @@
 
 
-import AnimatedSection from "@/components/animations/animated-section"
+import { AnimatedSection } from "@/components/animations/animated-section"
 import { AnimatedContactInfo, AnimatedContactInfoItem } from "@/components/animations/animated-contact-info"
 import { ExternalLinkItem } from "@/components/footer"
 import { openSans } from "@/fonts"
