@@ -9,10 +9,26 @@ import { FaDonate } from "react-icons/fa";
 import { FiCalendar, FiHeart, FiUsers } from "react-icons/fi";
 import { IoChevronForward } from "react-icons/io5";
 import { PiPalette } from "react-icons/pi";
+import dynamic from "next/dynamic";
+import SpaceAdventureGame from "@/components/space-advanture";
+import { useState } from "react";
+
+const VantaBirds = dynamic(() => import("@/components/vanta-birds"), {
+  ssr: false,
+  loading: () => <div className="w-full h-screen bg-black" />,
+});
 
 export default function Home() {
+  const [play, setPlay] = useState(false);
+
   return (
-    <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
+    <section className="relative w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
+      <VantaBirds />
+      {
+        play && (
+          <SpaceAdventureGame handleClose={() => setPlay(false)} />
+        )
+      }
       <div className='flex-1 min-h-0 mx-auto px-3 w-full flex flex-row items-center justify-center mb-4'>
         <AnimatedSection delay={0.6} classNames="self-start max-w-3xl mx-auto pt-16 space-y-6">
           <h2 className="text-5xl font-bold text-center">
@@ -23,12 +39,15 @@ export default function Home() {
             <Link href={"/team"} className='text-xl font-light text-white border border-blue-500 hover:border-blue-600 bg-blue-500 my-3 rounded-full px-3 py-2 flex flexrow items-center gap-1 hover:bg-blue-600'>
               Join Us
             </Link>
-            <Link href={"/work"} className='group text-xl font-light border-[2px] border-blue-500 text-blue-500 my-3 rounded-full px-3 py-2 flex flexrow items-center gap-1 inline-flex items-center gap-1'>
+            <button onClick={() => setPlay(true)} className='group text-xl font-light border-[2px] border-blue-500 text-blue-500 my-3 rounded-full px-3 py-2 flex flexrow items-center gap-1 inline-flex items-center gap-1'>
               <span>
-                Watch Our Work
+                Play
               </span>
-              <IoChevronForward className="group-hover:translate-x-2  group-hover:underline-blue-500 transition-all duration-700" />
-            </Link>
+            </button>
+            <IoChevronForward className="group-hover:translate-x-2  group-hover:underline-blue-500 transition-all duration-700" />
+
+            {/* <Link href={"/work"} className='group text-xl font-light border-[2px] border-blue-500 text-blue-500 my-3 rounded-full px-3 py-2 flex flexrow items-center gap-1 inline-flex items-center gap-1'> */}
+            {/* </Link> */}
           </div>
         </AnimatedSection>
       </div>
@@ -48,7 +67,7 @@ export default function Home() {
               We provide safe creative spaces where young people can share their stories, build skills, and
               lead community change
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-8 md:px-3 lg:px-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-8 md:px-4 lg:px-6 gap-8">
               <AnimatedContactInfoItem delay={0.4}>
                 <Card
                   title="Support our mission."
