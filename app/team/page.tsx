@@ -1,19 +1,54 @@
 
+import { AnimatedContactInfoItem } from '@/components/animations/animated-contact-info'
+import Member from '@/components/memeber'
+// import VantaBirds from '@/components/vanta-birds'
 import React from 'react'
 
 const Team = () => {
   return (
-    <div className='w-full min-h-[85dvh] flex flex-col items-center justify-start max-w-4xl mx-auto p-5'>
-      <div>
-        <h1 className='text-3xl font-bold mb-5'>The Team</h1>
-        <p className='mb-3'>At Steadfast Haven, our team is a diverse group of passionate individuals dedicated to empowering youth through the arts. Each member brings unique skills and experiences that contribute to our mission of fostering creativity and self-expression.</p>
+    <div className='w-full min-h-[85dvh] flex flex-col items-center justify-start max-w-7xl mx-auto p-10 space-y-8'>
+      {/* <VantaBirds /> */}
+      <div className='text-center max-w-2xl space-y-2'>
+        <h1 className='text-4xl font-bold'>Team Overview</h1>
+        <p className='text-2xl'>
+          Steadfast Haven is led by a passionate and mission-driven team committed to creating lasting
+          impact through strategic leadership, clear communication, and strong community connections.
+        </p>
       </div>
-      <div>
-        <h2 className='text-2xl font-semibold mb-3'>Meet Our Team Members</h2>
-        <ul className='list-disc list-inside space-y-2'>
-          <li><strong>Jane Doe</strong> - Founder & Director: With a background in social work and a passion for the arts, Jane leads our organization with vision and dedication.</li>
-          <li><strong>John Smith</strong> - Program Coordinator: John oversees our art, film</li>
-        </ul>
+      <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 md:gap-14 lg:gap-20 p-2 sm:p-4 md:p-6 lg:p-8'>
+
+        <AnimatedContactInfoItem delay={0.2}>
+          <Member id="1" name="Director of Operations" socialId='Angelo Perry' link='#' about='Ensures smooth execution of programs and internal operations across the organization.' />
+        </AnimatedContactInfoItem>
+
+        <AnimatedContactInfoItem delay={0.3}>
+          <Member id="2" name="Co-Founder" socialId='Seymone Tanzy ' link='#' about='Supports strategic development and growth initiatives at the core of the organization.' />
+        </AnimatedContactInfoItem>
+
+        <AnimatedContactInfoItem delay={0.6}>
+          <Member id="3" name="Staffing Assistant" socialId='Mohamed El Mahdi' link='#' about='Supports day-to-day team coordination, task follow-up, and project organization.' />
+        </AnimatedContactInfoItem>
+
+        <AnimatedContactInfoItem delay={0.4}>
+          <Member id="4" name="Executive Director & Founder" socialId='Shadonna Banks ' link='#' about='Guides the vision and mission of Steadfast Haven with purpose, compassion, and leadership.' />
+        </AnimatedContactInfoItem>
+
+
+        <AnimatedContactInfoItem delay={0.2}>
+          <Member id="1" name="Director of Operations" socialId='Angelo Perry' link='#' about='Ensures smooth execution of programs and internal operations across the organization.' />
+        </AnimatedContactInfoItem>
+
+        <AnimatedContactInfoItem delay={0.3}>
+          <Member id="2" name="Co-Founder" socialId='Seymone Tanzy ' link='#' about='Supports strategic development and growth initiatives at the core of the organization.' />
+        </AnimatedContactInfoItem>
+
+        <AnimatedContactInfoItem delay={0.4}>
+          <Member id="3" name="Executive Director & Founder" socialId='Shadonna Banks ' link='#' about='Guides the vision and mission of Steadfast Haven with purpose, compassion, and leadership.' />
+        </AnimatedContactInfoItem>
+
+        <AnimatedContactInfoItem delay={0.6}>
+          <Member id="4" name="Staffing Assistant" socialId='Mohamed El Mahdi' link='#' about='Guides the vision and mission of Steadfast Haven with purpose, compassion, and leadership.' />
+        </AnimatedContactInfoItem>
       </div>
     </div>)
 }
