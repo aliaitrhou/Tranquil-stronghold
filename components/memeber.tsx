@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from "next/image";
-import Link from "next/link";
 
 interface Props {
   id: string;
@@ -10,8 +9,8 @@ interface Props {
   about: string;
 }
 
-const Member: React.FC<Props> = ({ id, name, socialId, link, about }) => (
-  <div className="flex-1 overflow-hidden rounded-[28px] bg-zinc-100 transition-all duration-500 ease-out border-[1px] border-zinc-200">
+const Member: React.FC<Props> = ({ id, name, socialId, about }) => (
+  <div className="flex-1 overflow-hidden aspect-[5/7] rounded-[28px] bg-zinc-100 transition-all duration-500 ease-out border-[1px] border-zinc-200">
     {/* Image Container */}
     <div className="relative w-full h-[250px] hover:scale-[1.1] transition-all duration-500 ease-out">
       <Image
