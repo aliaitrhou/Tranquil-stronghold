@@ -21,6 +21,15 @@ export default function RootLayout({
         className={`flex flex-col bg-white min-h-screen text-black ${inter.className}`}
       >
         <Header />
+        <div className="w-full h-20 opacity-65 blur-3xl pointer-events-none bg-gradient-to-r
+  from-[#007aff]
+  via-[#0a84ff_15%]
+  via-[#30d158_30%]
+  via-[#ffd60a_50%]
+  via-[#ff9f0a_65%]
+  via-[#ff375f_80%]
+  to-[#bf5af2]">
+        </div>
         {children}
         <Footer />
       </body>
