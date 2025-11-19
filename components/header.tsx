@@ -18,7 +18,7 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <div className={`sticky top-0 left-0 right-0 z-30 backdrop-blur-md bg-white/30 border-b border-neutral-200 w-full  px-3 ${inter.className}`}>
+    <div className={`sticky top-0 left-0 right-0 z-30 backdrop-blur-xl bg-white/60 border-b border-black/20 w-full  px-3 ${inter.className}`}>
       <div className='max-w-4xl mx-auto flex flex-row items-center justify-between text-xs'>
         <Link href={"/"} className='flex flex-row items-center gap-2' >
           <Image src={Logo} className='border border-zinc-800' alt="Steadfast haven logo" width={34} height={34} />
