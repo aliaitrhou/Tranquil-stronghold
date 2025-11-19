@@ -22,8 +22,7 @@ export default function Home() {
   const [play, setPlay] = useState(false);
 
   return (
-    <section className="relative w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
-      <VantaBirds />
+    <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
       {
         play && (
           <SpaceAdventureGame handleClose={() => setPlay(false)} />
@@ -43,8 +42,8 @@ export default function Home() {
               <span>
                 Play
               </span>
+              <IoChevronForward className="group-hover:translate-x-1  group-hover:underline-blue-500 transition-all duration-700" />
             </button>
-            <IoChevronForward className="group-hover:translate-x-2  group-hover:underline-blue-500 transition-all duration-700" />
 
             {/* <Link href={"/work"} className='group text-xl font-light border-[2px] border-blue-500 text-blue-500 my-3 rounded-full px-3 py-2 flex flexrow items-center gap-1 inline-flex items-center gap-1'> */}
             {/* </Link> */}
