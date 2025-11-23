@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Rocket } from "lucide-react";
+import { BsFillRocketTakeoffFill } from "react-icons/bs";
 
 interface FlyingRocketProps {
   onCatch: () => void;
@@ -64,8 +65,8 @@ export default function FlyingRocket({ onCatch }: FlyingRocketProps) {
     >
       <div className="relative">
         <div className="absolute -inset-2 bg-blue-500/20 rounded-full blur-xl group-hover:bg-blue-500/40 transition-all"></div>
-        <div className="relative bg-gradient-to-br from-blue-400 to-blue-600 p-4 rounded-full shadow-xl border-2 border-white group-hover:shadow-2xl transition-all">
-          <Rocket className="w-8 h-8 text-white" style={{ transform: `rotate(${direction.x > 0 ? 45 : -45}deg)` }} />
+        <div className="relative bg-gradient-to-br from-blue-400 to-blue-600 p-3 rounded-full shadow-xl border-2 border-white group-hover:shadow-2xl transition-all">
+          <BsFillRocketTakeoffFill className="w-6 h-6 text-white" style={{ transform: `rotate(${direction.x > 0 ? 45 : -45}deg)` }} />
         </div>
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white px-3 py-1 rounded-full shadow-lg text-sm font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
           Catch me! 🎮

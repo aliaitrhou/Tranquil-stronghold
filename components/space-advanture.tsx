@@ -266,7 +266,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
                   width: '48px',
                   height: '48px',
                   filter: 'drop-shadow(0 0 15px cyan)',
-                  transform: 'rotate(0deg)',
+                  transform: 'rotate(-45deg)',
                 }}
               />
 
