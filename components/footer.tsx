@@ -1,12 +1,12 @@
 
 import Link from 'next/link'
 import React from 'react'
-import { FaAngleRight, FaChevronRight } from 'react-icons/fa'
+import { FaChevronRight } from 'react-icons/fa'
 
 const Footer = () => {
   return (
-    <footer className="w-full text-neutral-500 text-sm pb-6 bg-teal-50">
-      <div className='w-full mb-6 bg-gradient-to-r from-white via-neutral-300 to-white h-[2px]'></div>
+    <footer className="w-full text-neutral-500 text-sm p-6 bg-gray-50 border-t border-gray-400/50">
+      {/* <div className='w-full mb-6 bg-gradient-to-r from-white via-neutral-300 to-white h-[2px]'></div> */}
       <div className='max-w-4xl mx-auto pt-4 flex flex-row items-cente justify-between'>
         <p className="text-center text-xs">
           &copy; {new Date().getFullYear()} Steadfast Haven. All rights reserved.
