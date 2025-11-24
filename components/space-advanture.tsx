@@ -3,15 +3,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Rocket, Star, Gem, Zap, Play, X } from 'lucide-react';
 
+type GameItem = {
+  id: number;
+  x: number;
+  y: number;
+  speed: number;
+};
+
 export default function SpaceAdventureGame({ handleClose }: { handleClose: () => void }) {
   const [mounted, setMounted] = useState(false);
   const [position, setPosition] = useState(50);
   const [score, setScore] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [stars, setStars] = useState([]);
-  const [obstacles, setObstacles] = useState([]);
-  const [gems, setGems] = useState([]);
+  const [stars, setStars] = useState<GameItem[]>([]);
+  const [obstacles, setObstacles] = useState<GameItem[]>([]);
+  const [gems, setGems] = useState<GameItem[]>([]);
   const [level, setLevel] = useState(1);
 
   useEffect(() => {
@@ -47,7 +54,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
   useEffect(() => {
     if (!gameStarted || gameOver) return;
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         setPosition((prev) => Math.max(5, prev - 5));
       } else if (e.key === 'ArrowRight') {
