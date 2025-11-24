@@ -94,11 +94,6 @@ export default function FlyingRocket({ onCatch }: FlyingRocketProps) {
         >
           {/* Main Rocket Icon */}
           <Rocket className="w-10 h-10 text-white drop-shadow-md" />
-
-          {/* Flame - polished with soft gradient */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col space-y-1">
-            <div className="w-3 h-3 bg-orange-500 rounded-full blur-sm animate-ping opacity-80"></div>
-          </div>
         </div>
 
         {/* Tooltip */}
