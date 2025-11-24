@@ -16,6 +16,13 @@ import FlyingRocket from "@/components/flying-rocket";
 export default function Home() {
   const [play, setPlay] = useState(false);
   const [showRocket, setShowRocket] = useState(true);
+  const handleCloseGame = () => {
+  setPlay(false);
+  // Reset the rocket after a short delay
+  setTimeout(() => {
+    setShowRocket(true);
+  }, 300);
+};
 
   return (
     <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
@@ -29,7 +36,7 @@ export default function Home() {
       )}
       {
         play && (
-          <SpaceAdventureGame handleClose={() => setPlay(false)} />
+          <SpaceAdventureGame handleClose={handleCloseGame} />
         )
       }
       <div className='flex-1 min-h-0 mx-auto px-3 w-full flex flex-row items-center justify-center mb-4'>
