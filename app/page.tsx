@@ -3,7 +3,6 @@
 import { AnimatedSection, AnimatedSectionH } from "@/components/animations/animated-section";
 import { AnimatedContactInfoItem } from "@/components/animations/animated-contact-info";
 import Card from "@/components/card";
-import { inter, openSans } from "@/fonts";
 import Link from "next/link";
 import { FaDonate } from "react-icons/fa";
 import { FiCalendar, FiHeart, FiUsers } from "react-icons/fi";
@@ -12,17 +11,18 @@ import { PiPalette } from "react-icons/pi";
 import SpaceAdventureGame from "@/components/space-advanture";
 import { useState } from "react";
 import FlyingRocket from "@/components/flying-rocket";
+import { RiTeamLine } from "react-icons/ri";
 
 export default function Home() {
   const [play, setPlay] = useState(false);
   const [showRocket, setShowRocket] = useState(true);
   const handleCloseGame = () => {
-  setPlay(false);
-  // Reset the rocket after a short delay
-  setTimeout(() => {
-    setShowRocket(true);
-  }, 300);
-};
+    setPlay(false);
+    // Reset the rocket after a short delay
+    setTimeout(() => {
+      setShowRocket(true);
+    }, 300);
+  };
 
   return (
     <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
@@ -115,40 +115,47 @@ See young creators share their work throughout the year.
               left={false}
             />
           </AnimatedContactInfoItem>
-
         </div>
       </AnimatedSectionH>
 
 
-      <div className="w-[70%] mx-auto grid grid-cols-1 gap-8 lg:gap-14 py-8 px-14 my-8">
-        <AnimatedContactInfoItem delay={0.6}>
-          <Card
-            id={3}
-            title="Volunteer your time."
-            desc="
+      <AnimatedSectionH
+        classNames="w-full overflow-hidden bg-white rounded-b-[23rem] md:rounded-b-[20rem]  lg:rounded-b-[90%] border-b border-b-neutral-300 px-8 pb-8 mb-8 text-center"
+      >
+        <div className="w-[70%] mx-auto grid grid-cols-1 gap-8 lg:gap-14 px-8 pb-8 px-14 my-8">
+          <AnimatedContactInfoItem delay={0.6}>
+            <Card
+              id={3}
+              title="Volunteer your time."
+              desc="
             Share your talents in art, film, music, or mentorship.
             Support young creators by offering guidance and inspiration.
             Your time can spark growth, confidence, and new skills.
             "
-            icon={FiUsers}
-            left={true}
-          />
-        </AnimatedContactInfoItem>
+              icon={FiUsers}
+              left={true}
+            />
+          </AnimatedContactInfoItem>
 
-        <AnimatedContactInfoItem delay={0.8}>
-          <Card
-            id={4}
-            title="Join our programs."
-            desc="
+          <AnimatedContactInfoItem delay={0.8}>
+            <Card
+              id={4}
+              title="Join our programs."
+              desc="
               Explore youth programs in art, film, and music.
               Develop creative skills in a supportive, hands-on environment.
               Designed to amplify youth voices and encourage self-expression.
               "
-            icon={PiPalette}
-            left={false}
-          />
-        </AnimatedContactInfoItem>
-      </div>
+              icon={PiPalette}
+              left={false}
+            />
+          </AnimatedContactInfoItem>
+        </div>
+        <a target="_blank" href={"/team"} className="inline-flex border border-neutral-300 items-center gap-2 bg-white px-4 py-1 rounded-full text-xs sm:text-sm font-medium text-blue-600 mb-6 hover:underline hover:underline-blue-500">
+          <RiTeamLine className="w-4 h-4" />
+          Join our Team
+        </a>
+      </AnimatedSectionH>
 
     </section >
   );
