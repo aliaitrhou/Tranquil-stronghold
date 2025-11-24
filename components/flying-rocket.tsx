@@ -73,22 +73,22 @@ export default function FlyingRocket({ onCatch }: FlyingRocketProps) {
       Math.cos(timeRef.current * 0.008) * 0.4;
     
     const rad = (directionRef.current * Math.PI) / 180;
-    const nx = positionRef.current.x + Math.cos(rad) * speedRef.current + wobbleX * 0.1;
-    const ny = positionRef.current.y + Math.sin(rad) * speedRef.current + wobbleY * 0.1;
-
+    const nx = positionRef.current.x + Math.cos(rad) * speedRef.current + wobbleX * 0.07;
+    const ny = positionRef.current.y + Math.sin(rad) * speedRef.current + wobbleY * 0.07;
+    
     let nextX = nx;
     let nextY = ny;
 
     // Bounce with star burst effect
     if (nx < 8 || nx > 92) {
       directionRef.current = 180 - directionRef.current + (Math.random() - 0.5) * 20;
-      speedRef.current = 0.2 + Math.random() * 0.4;
+      speedRef.current = 0.2 + Math.random() * 0.04;
       nextX = Math.max(8, Math.min(nx, 92));
       createStarBurst(nextX, nextY);
     }
     if (ny < 8 || ny > 82) {
       directionRef.current = -directionRef.current + (Math.random() - 0.5) * 20;
-      speedRef.current = 0.2 + Math.random() * 0.4;
+      speedRef.current = 0.2 + Math.random() * 0.04;
       nextY = Math.max(8, Math.min(ny, 82));
       createStarBurst(nextX, nextY);
     }
@@ -151,7 +151,7 @@ export default function FlyingRocket({ onCatch }: FlyingRocketProps) {
     
     // Speed boost activation
     if ((missCount + 1) % 2 === 0) {
-      speedRef.current = Math.min(speedRef.current + 0.25, 1.2);
+      speedRef.current = Math.min(speedRef.current + 0.05, 1.2);
       setSpeedBoost(true);
       setTimeout(() => setSpeedBoost(false), 2000);
     }
