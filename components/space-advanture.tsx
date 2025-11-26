@@ -387,11 +387,11 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 animate-fadeIn select-none"
       onClick={handleClose}
     >
       <div 
-        className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-slideUp"
+        className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-slideUp select-none"
         onClick={(e) => e.stopPropagation()}
       >
       
@@ -507,10 +507,10 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
           ) : (
             <div
               ref={gameAreaRef}
-              className={`relative bg-gradient-to-b from-slate-50 via-white to-gray-50 overflow-hidden ${
+              className={`relative bg-gradient-to-b from-slate-50 via-white to-gray-50 overflow-hidden select-none ${
                 shakeScreen ? "animate-shake" : ""
               }`}
-              style={{ height: "600px" }}
+              style={{ height: "600px", userSelect: 'none', WebkitUserSelect: 'none' }}
             >
 
               {/* particles */}
@@ -675,8 +675,8 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
 
         {/* CONTROL INFO */}
         {gameStarted && !gameOver && (
-          <div className="bg-gradient-to-r from-slate-50 to-gray-50 border-t border-gray-200 p-4 text-center">
-            <p className="text-gray-600 text-sm font-medium">
+          <div className="bg-gradient-to-r from-slate-50 to-gray-50 border-t border-gray-200 p-4 text-center select-none">
+            <p className="text-gray-600 text-sm font-medium select-none">
               Use <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded font-semibold">Arrow Keys</span>  
               {' or '}
               <span className="px-2 py-1 bg-violet-100 text-violet-700 rounded font-semibold">Mouse</span> to control
@@ -689,6 +689,13 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
       </div>
 
       <style jsx>{`
+        * {
+          user-select: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+        }
+        
         @keyframes fadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
