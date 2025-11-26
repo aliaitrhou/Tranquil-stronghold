@@ -45,12 +45,15 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
   const [shakeScreen, setShakeScreen] = useState(false);
 
   const keysPressed = useRef<Set<string>>(new Set());
+  const mousePosition = useRef<{ x: number; y: number } | null>(null);
+  const isMouseActive = useRef<boolean>(false);
   const gameAreaRef = useRef<HTMLDivElement | null>(null);
 
   const gameWidth = 100;
   const gameHeight = 100;
   const playerSize = 6;
-  const moveSpeed = 2.5;
+  const moveSpeed = 1.5; // Slower speed for comfortable arrow key control
+  const mouseSmoothing = 0.2; // Smoothing factor for mouse movement
 
   const createParticles = (x: number, y: number, color: string, count: number = 10) => {
     const newParticles: Particle[] = [];
@@ -100,13 +103,16 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
     };
   }, [slowMo]);
 
+  // Keyboard controls
   useEffect(() => {
     if (!gameStarted || gameOver) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (["arrowleft", "arrowright", "arrowup", "arrowdown"].includes(e.key.toLowerCase())) {
+      const key = e.key.toLowerCase();
+      if (["arrowleft", "arrowright", "arrowup", "arrowdown"].includes(key)) {
         e.preventDefault();
-        keysPressed.current.add(e.key.toLowerCase());
+        keysPressed.current.add(key);
+        isMouseActive.current = false; // Disable mouse when keyboard is used
       }
     };
 
@@ -123,51 +129,81 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
     };
   }, [gameStarted, gameOver]);
 
-  useEffect(() => {
-    if (!gameStarted || gameOver) return;
-
-    const interval = setInterval(() => {
-      setPositionX(prev => {
-        let x = prev;
-        if (keysPressed.current.has("arrowleft")) x = Math.max(2, prev - moveSpeed);
-        if (keysPressed.current.has("arrowright")) x = Math.min(gameWidth - playerSize - 2, prev + moveSpeed);
-        return x;
-      });
-
-      setPositionY(prev => {
-        let y = prev;
-        if (keysPressed.current.has("arrowup")) y = Math.max(2, prev - moveSpeed);
-        if (keysPressed.current.has("arrowdown")) y = Math.min(gameHeight - playerSize - 2, prev + moveSpeed);
-        return y;
-      });
-    }, 16);
-
-    return () => clearInterval(interval);
-  }, [gameStarted, gameOver]);
-
+  // Mouse movement - smoothed for better control
   useEffect(() => {
     if (!gameStarted || gameOver) return;
 
     const onMouseMove = (e: MouseEvent) => {
       if (!gameAreaRef.current) return;
-
       const rect = gameAreaRef.current.getBoundingClientRect();
       const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
       const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
-
-      setPositionX(prev => prev + (mouseX - prev) * 0.15);
-      setPositionY(prev => prev + (mouseY - prev) * 0.15);
+      
+      // Store mouse position and mark mouse as active
+      isMouseActive.current = true;
+      mousePosition.current = { 
+        x: Math.max(2, Math.min(gameWidth - playerSize - 2, mouseX - playerSize / 2)), 
+        y: Math.max(2, Math.min(gameHeight - playerSize - 2, mouseY - playerSize / 2))
+      };
     };
 
-    window.addEventListener("mousemove", onMouseMove);
-    return () => window.removeEventListener("mousemove", onMouseMove);
+    const onMouseLeave = () => {
+      mousePosition.current = null;
+      isMouseActive.current = false;
+    };
+
+    const gameArea = gameAreaRef.current;
+    if (gameArea) {
+      gameArea.addEventListener("mousemove", onMouseMove);
+      gameArea.addEventListener("mouseleave", onMouseLeave);
+      return () => {
+        gameArea.removeEventListener("mousemove", onMouseMove);
+        gameArea.removeEventListener("mouseleave", onMouseLeave);
+      };
+    }
   }, [gameStarted, gameOver]);
 
+  // Main game loop
   useEffect(() => {
     if (!gameStarted || gameOver) return;
 
     const interval = setInterval(() => {
+      // Handle movement (keyboard and mouse)
+      setPositionX(prev => {
+        // Keyboard movement (prioritized when not using mouse)
+        if (!isMouseActive.current && keysPressed.current.size > 0) {
+          let x = prev;
+          if (keysPressed.current.has("arrowleft")) x = Math.max(2, prev - moveSpeed);
+          if (keysPressed.current.has("arrowright")) x = Math.min(gameWidth - playerSize - 2, prev + moveSpeed);
+          return x;
+        }
+        
+        // Mouse movement with smoothing
+        if (isMouseActive.current && mousePosition.current !== null) {
+          return prev + (mousePosition.current.x - prev) * mouseSmoothing;
+        }
+        
+        return prev;
+      });
 
+      setPositionY(prev => {
+        // Keyboard movement (prioritized when not using mouse)
+        if (!isMouseActive.current && keysPressed.current.size > 0) {
+          let y = prev;
+          if (keysPressed.current.has("arrowup")) y = Math.max(2, prev - moveSpeed);
+          if (keysPressed.current.has("arrowdown")) y = Math.min(gameHeight - playerSize - 2, prev + moveSpeed);
+          return y;
+        }
+        
+        // Mouse movement with smoothing
+        if (isMouseActive.current && mousePosition.current !== null) {
+          return prev + (mousePosition.current.y - prev) * mouseSmoothing;
+        }
+        
+        return prev;
+      });
+
+      // Update particles
       setParticles(prev =>
         prev.map(p => ({ ...p, x: p.x + p.vx, y: p.y + p.vy, life: p.life - 0.02 }))
             .filter(p => p.life > 0)
@@ -293,6 +329,8 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
     setSlowMo(false);
     setMagnet(false);
     keysPressed.current.clear();
+    mousePosition.current = null;
+    isMouseActive.current = false;
   };
 
   return (
