@@ -61,7 +61,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
   const gameWidth = 100;
   const gameHeight = 100;
   const playerSize = 6;
-  const moveSpeed = 0.5; // Slower speed for comfortable arrow key control
+  const moveSpeed = 1.7; // Slower speed for comfortable arrow key control
   const mouseSmoothing = 0.2; // Smoothing factor for mouse movement
 
   const createParticles = (x: number, y: number, color: string, count: number = 10) => {
