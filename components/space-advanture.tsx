@@ -14,6 +14,12 @@ type PowerUp = GameItem & {
   type: 'shield' | 'slowmo' | 'magnet';
 };
 
+type Bullet = {
+  id: number;
+  x: number;
+  y: number;
+};
+
 type Particle = {
   id: number;
   x: number;
@@ -35,6 +41,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
   const [obstacles, setObstacles] = useState<GameItem[]>([]);
   const [gems, setGems] = useState<GameItem[]>([]);
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
+  const [bullets, setBullets] = useState<Bullet[]>([]);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [level, setLevel] = useState(1);
   const [lives, setLives] = useState(3);
@@ -48,11 +55,13 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
   const mousePosition = useRef<{ x: number; y: number } | null>(null);
   const isMouseActive = useRef<boolean>(false);
   const gameAreaRef = useRef<HTMLDivElement | null>(null);
+  const lastShootTime = useRef<number>(0);
+  const shootCooldown = 200; // milliseconds between shots
 
   const gameWidth = 100;
   const gameHeight = 100;
   const playerSize = 6;
-  const moveSpeed = 1.5; // Slower speed for comfortable arrow key control
+  const moveSpeed = 0.5; // Slower speed for comfortable arrow key control
   const mouseSmoothing = 0.2; // Smoothing factor for mouse movement
 
   const createParticles = (x: number, y: number, color: string, count: number = 10) => {
@@ -69,6 +78,19 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
       });
     }
     setParticles(prev => [...prev, ...newParticles]);
+  };
+
+  const shootBullet = () => {
+    const now = Date.now();
+    if (now - lastShootTime.current < shootCooldown) return;
+    
+    lastShootTime.current = now;
+    setBullets(prev => [...prev, {
+      id: Math.random(),
+      x: positionX + playerSize / 2 - 0.5,
+      y: positionY - 2
+    }]);
+    createParticles(positionX + playerSize / 2, positionY, "#60a5fa", 5);
   };
 
   const generateStar = useCallback(() => ({
@@ -114,6 +136,11 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
         keysPressed.current.add(key);
         isMouseActive.current = false; // Disable mouse when keyboard is used
       }
+      // Shoot with spacebar
+      if (key === " " || key === "spacebar") {
+        e.preventDefault();
+        shootBullet();
+      }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -127,7 +154,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [gameStarted, gameOver]);
+  }, [gameStarted, gameOver, positionX, positionY]);
 
   // Mouse movement - smoothed for better control
   useEffect(() => {
@@ -152,16 +179,22 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
       isMouseActive.current = false;
     };
 
+    const onClick = () => {
+      shootBullet();
+    };
+
     const gameArea = gameAreaRef.current;
     if (gameArea) {
       gameArea.addEventListener("mousemove", onMouseMove);
       gameArea.addEventListener("mouseleave", onMouseLeave);
+      gameArea.addEventListener("click", onClick);
       return () => {
         gameArea.removeEventListener("mousemove", onMouseMove);
         gameArea.removeEventListener("mouseleave", onMouseLeave);
+        gameArea.removeEventListener("click", onClick);
       };
     }
-  }, [gameStarted, gameOver]);
+  }, [gameStarted, gameOver, positionX, positionY]);
 
   // Main game loop
   useEffect(() => {
@@ -207,6 +240,12 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
       setParticles(prev =>
         prev.map(p => ({ ...p, x: p.x + p.vx, y: p.y + p.vy, life: p.life - 0.02 }))
             .filter(p => p.life > 0)
+      );
+
+      // Update bullets
+      setBullets(prev => prev
+        .map(b => ({ ...b, y: b.y - 3 }))
+        .filter(b => b.y > -5)
       );
 
       setStars(prev => {
@@ -262,13 +301,28 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
 
       setObstacles(prev => {
         let hit = false;
+        let destroyedIds = new Set<number>();
+
+        // Check bullet collisions with obstacles
+        bullets.forEach(bullet => {
+          prev.forEach(o => {
+            const bulletHit = Math.abs(bullet.x - o.x) < 4 && Math.abs(bullet.y - o.y) < 4;
+            if (bulletHit && !destroyedIds.has(o.id)) {
+              destroyedIds.add(o.id);
+              createParticles(o.x, o.y, "#fbbf24", 20);
+              setScore(s => s + 50);
+              setBullets(b => b.filter(bul => bul.id !== bullet.id));
+            }
+          });
+        });
 
         prev.forEach(o => {
           const c = Math.abs(o.x - positionX) < playerSize + 2 &&
                     Math.abs(o.y - positionY) < playerSize + 2;
 
-          if (c && !hit) {
+          if (c && !hit && !destroyedIds.has(o.id)) {
             hit = true;
+            destroyedIds.add(o.id);
             setCombo(0);
             createParticles(o.x, o.y, "#ef4444", 15);
 
@@ -290,10 +344,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
           }
         });
 
-        return prev.filter(o => 
-          !(Math.abs(o.x - positionX) < playerSize + 2 &&
-            Math.abs(o.y - positionY) < playerSize + 2)
-        );
+        return prev.filter(o => !destroyedIds.has(o.id));
       });
 
       setScore(prev => {
@@ -307,7 +358,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
     return () => clearInterval(interval);
   }, [
     gameStarted, gameOver, positionX, positionY, level, combo,
-    shield, magnet, slowMo, score, highScore,
+    shield, magnet, slowMo, score, highScore, bullets,
     generateStar, generateObstacle, generateGem, generatePowerUp
   ]);
 
@@ -321,6 +372,7 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
     setObstacles([]);
     setGems([]);
     setPowerUps([]);
+    setBullets([]);
     setParticles([]);
     setLevel(1);
     setLives(3);
@@ -439,6 +491,8 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
                   <strong className="text-blue-600">🖱 Mouse Movement</strong>
                   {' or '}
                   <strong className="text-violet-600">⬆ ⬇ ⬅ ➡ Arrow Keys</strong>
+                  <br />
+                  <strong className="text-orange-600">Click or Spacebar to Shoot</strong>
                 </p>
 
                 <button
@@ -501,6 +555,21 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
                     width: "28px",
                     height: "28px",
                     filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))',
+                  }}
+                />
+              ))}
+
+              {/* bullets */}
+              {bullets.map(b => (
+                <div
+                  key={b.id}
+                  className="absolute bg-blue-400 rounded-full"
+                  style={{
+                    left: `${b.x}%`,
+                    top: `${b.y}%`,
+                    width: "8px",
+                    height: "16px",
+                    boxShadow: '0 0 12px rgba(96, 165, 250, 0.8)',
                   }}
                 />
               ))}
@@ -611,6 +680,8 @@ export default function SpaceAdventureGame({ handleClose }: { handleClose: () =>
               Use <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded font-semibold">Arrow Keys</span>  
               {' or '}
               <span className="px-2 py-1 bg-violet-100 text-violet-700 rounded font-semibold">Mouse</span> to control
+              {' • '}
+              <span className="px-2 py-1 bg-orange-100 text-orange-700 rounded font-semibold">Spacebar/Click</span> to shoot
             </p>
           </div>
         )}
