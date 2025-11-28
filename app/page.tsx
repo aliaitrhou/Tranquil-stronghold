@@ -4,25 +4,69 @@ import { AnimatedSection, AnimatedSectionH } from "@/components/animations/anima
 import { AnimatedContactInfoItem } from "@/components/animations/animated-contact-info";
 import Card from "@/components/card";
 import Link from "next/link";
-import { FaDonate } from "react-icons/fa";
+import { FaDonate, FaSpinner } from "react-icons/fa";
 import { FiCalendar, FiHeart, FiUsers } from "react-icons/fi";
 import { IoChevronForward } from "react-icons/io5";
 import { PiPalette } from "react-icons/pi";
 import SpaceAdventureGame from "@/components/space-advanture";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FlyingRocket from "@/components/flying-rocket";
 import { RiTeamLine } from "react-icons/ri";
+import { GoArrowRight } from "react-icons/go";
+import { getHomeCards } from "@/lib/strapi";
+import { Spinnaker } from "next/font/google";
+import { SiSpinnaker } from "react-icons/si";
+import { ImSpinner2 } from "react-icons/im";
+
+
+// Icon mapping
+const iconMap: { [key: string]: any } = {
+  FiCalendar: FiCalendar,
+  FiHeart: FiHeart,
+  FiUsers: FiUsers,
+  PiPalette: PiPalette,
+};
+
 
 export default function Home() {
   const [play, setPlay] = useState(false);
   const [showRocket, setShowRocket] = useState(true);
+  const [cards, setCards] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadCards() {
+      try {
+        const data = await getHomeCards();
+        console.log("Fetched cards:", data);
+        setCards(data);
+      } catch (error) {
+        console.error("Error loading cards:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadCards();
+  }, []);
+
   const handleCloseGame = () => {
     setPlay(false);
     // Reset the rocket after a short delay
     setTimeout(() => {
       setShowRocket(true);
-    }, 300);
+    }, 500);
   };
+
+  const topCards = cards.filter(card => card.cardId <= 2);
+  const bottomCards = cards.filter(card => card.cardId > 2);
+
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <ImSpinner2 className="text-3xl text-blue-500 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <section className="w-full flex-1 min-h-0 flex flex-col items-center justify-start bg-white text-black">
@@ -47,7 +91,6 @@ export default function Home() {
           <h2 className="text-5xl md:text-6xl font-bold tracking-tight max-w-4xl">
             Empowering Youth Through<br />Art, Film & Music
           </h2>
-
           <div className="flex items-center gap-4 mt-4">
             <Link
               href="/team"
@@ -55,19 +98,32 @@ export default function Home() {
             >
               Join Us
             </Link>
-
             <Link
-              href={"/about"}
-              className="group text-xl px-6 py-2 rounded-full border-2 border-blue-500 text-blue-500 hover:bg-blue-50 transition"
+              href="/about"
+              className="group relative text-xl px-6 py-2 rounded-full border-2 border-blue-500 text-blue-500 hover:bg-blue-50 transition"
             >
               Learn More
-              <IoChevronForward className="inline-block ml-1 group-hover:translate-x-1 transition" />
+
+              <IoChevronForward
+                className="
+      inline-block ml-2 mb-[3px] 
+      transition-all duration-300
+      group-hover:opacity-0 group-hover:translate-x-1
+    "
+              />
+
+              <GoArrowRight
+                className="
+      inline-block size-6  -ml-4  absolute top-0 bottom-0 m-auto
+      opacity-0 translate-x-[-4px]
+      transition-all duration-300
+      group-hover:opacity-100 group-hover:translate-x-0
+    "
+              />
             </Link>
           </div>
         </AnimatedSection>
       </div>
-
-      {/* <svg viewBox="0 0 1680 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path fill="rgba(255, 255, 255, 1)" d="M 0 198 C 502.79999999999995 198 335.20000000000005 120 838 120 L 838 120 L 838 0 L 0 0 Z" stroke-width="0"></path> <path fill="rgba(255, 255, 255, 1)" d="M 837 120 C 1342.8 120 1174.2 198 1680 198 L 1680 198 L 1680 0 L 837 0 Z" stroke-width="0"></path> </svg> */}
 
       <AnimatedSectionH
         classNames="w-full min-h-screen overflow-hidden bg-white rounded-t-[23rem] md:rounded-t-[20rem]  lg:rounded-t-[90%] border-t border-t-neutral-300 p-8 pb-4 text-center"
@@ -87,34 +143,19 @@ export default function Home() {
           </div>
         </AnimatedSection>
 
-        <div className="w-[70%] mx-auto grid grid-cols-1 gap-8 lg:gap-14 py-8 px-14 my-8">
+        <div className="w-full md:max-w-5xl mx-auto grid grid-cols-1 gap-8 lg:gap-14 px-2 md:px-8 py-2 md:py-6 lg:py-8 lg:px-14 my-2 lg:my-6">
 
-          <AnimatedContactInfoItem delay={1}>
-            <Card
-              id={1}
-              title="Attend our events."
-              desc="
-Experience youth-led showcases and creative performances.
-Enjoy exhibitions, celebrations, and community gatherings.
-See young creators share their work throughout the year.
-"
-              icon={FiCalendar}
-              left={true}
-            />
-          </AnimatedContactInfoItem>
-          <AnimatedContactInfoItem delay={0.4}>
-            <Card
-              id={2}
-              title="Support our mission."
-              desc="
-            Your contribution fuels local creativity and access to the arts.
-            Donations provide supplies, equipment, and safe creative spaces.
-            Help empower Memphis youth through meaningful artistic opportunities.
-            "
-              icon={FiHeart}
-              left={false}
-            />
-          </AnimatedContactInfoItem>
+          {topCards.map((card, index) => (
+            <AnimatedContactInfoItem key={card.id} delay={0.4 + index * 0.2}>
+              <Card
+                id={card.cardId}
+                title={card.title}
+                desc={card.description}
+                icon={iconMap[card.icon] || FiCalendar}
+                left={card.left}
+              />
+            </AnimatedContactInfoItem>
+          ))}
         </div>
       </AnimatedSectionH>
 
@@ -122,34 +163,18 @@ See young creators share their work throughout the year.
       <AnimatedSectionH
         classNames="w-full overflow-hidden bg-white rounded-b-[23rem] md:rounded-b-[20rem]  lg:rounded-b-[90%] border-b border-b-neutral-300 px-8 pb-8 mb-8 text-center"
       >
-        <div className="w-[70%] mx-auto grid grid-cols-1 gap-8 lg:gap-14 px-8 pb-8 px-14 my-8">
-          <AnimatedContactInfoItem delay={0.6}>
-            <Card
-              id={3}
-              title="Volunteer your time."
-              desc="
-            Share your talents in art, film, music, or mentorship.
-            Support young creators by offering guidance and inspiration.
-            Your time can spark growth, confidence, and new skills.
-            "
-              icon={FiUsers}
-              left={true}
-            />
-          </AnimatedContactInfoItem>
-
-          <AnimatedContactInfoItem delay={0.8}>
-            <Card
-              id={4}
-              title="Join our programs."
-              desc="
-              Explore youth programs in art, film, and music.
-              Develop creative skills in a supportive, hands-on environment.
-              Designed to amplify youth voices and encourage self-expression.
-              "
-              icon={PiPalette}
-              left={false}
-            />
-          </AnimatedContactInfoItem>
+        <div className="w-full md:max-w-5xl mx-auto grid grid-cols-1 gap-8 lg:gap-14 px-2 md:px-8 pb-8 lg:px-14 my-8">
+          {bottomCards.map((card, index) => (
+            <AnimatedContactInfoItem key={card.id} delay={0.6 + index * 0.2}>
+              <Card
+                id={card.cardId}
+                title={card.title}
+                desc={card.description}
+                icon={iconMap[card.icon] || FiCalendar}
+                left={card.left}
+              />
+            </AnimatedContactInfoItem>
+          ))}
         </div>
         <a target="_blank" href={"/team"} className="inline-flex border border-neutral-300 items-center gap-2 bg-white px-4 py-1 rounded-full text-xs sm:text-sm font-medium text-blue-600 mb-6 hover:underline hover:underline-blue-500">
           <RiTeamLine className="w-4 h-4" />
@@ -157,6 +182,28 @@ See young creators share their work throughout the year.
         </a>
       </AnimatedSectionH>
 
+      <AnimatedSectionH delay={0.2} classNames="max-w-5xl mx-auto w-full px-6 bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-3xl p-12 text-center text-white">
+            <h2 className="text-4xl font-bold mb-4">Want to Collaborate?</h2>
+            <p className="text-xl mb-8 text-blue-50 max-w-2xl mx-auto">
+              We're always looking for partners, mentors, and supporters who believe in
+              empowering Memphis youth through creative expression.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <button className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-50 transition-all shadow-lg">
+                Get Involved
+              </button>
+              <button className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/10 transition-all">
+                Contact Us
+              </button>
+            </div>
+          </div>
+        </div>
+      </AnimatedSectionH>
+
     </section >
   );
 }
+
+
