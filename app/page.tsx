@@ -14,8 +14,6 @@ import FlyingRocket from "@/components/flying-rocket";
 import { RiTeamLine } from "react-icons/ri";
 import { GoArrowRight } from "react-icons/go";
 import { getHomeCards } from "@/lib/strapi";
-import { Spinnaker } from "next/font/google";
-import { SiSpinnaker } from "react-icons/si";
 import { ImSpinner2 } from "react-icons/im";
 
 
@@ -116,7 +114,7 @@ export default function Home() {
                 className="
       inline-block size-6  -ml-4  absolute top-0 bottom-0 m-auto
       opacity-0 translate-x-[-4px]
-      transition-all duration-300
+      transition-all duration-700
       group-hover:opacity-100 group-hover:translate-x-0
     "
               />
@@ -152,7 +150,7 @@ export default function Home() {
                 title={card.title}
                 desc={card.description}
                 icon={iconMap[card.icon] || FiCalendar}
-                left={card.left}
+                left={index % 2 == 0}
               />
             </AnimatedContactInfoItem>
           ))}
@@ -171,7 +169,7 @@ export default function Home() {
                 title={card.title}
                 desc={card.description}
                 icon={iconMap[card.icon] || FiCalendar}
-                left={card.left}
+                left={index % 2 == 0}
               />
             </AnimatedContactInfoItem>
           ))}
