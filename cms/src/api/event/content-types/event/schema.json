@@ -27,7 +27,7 @@
       "type": "string",
       "required": true
     },
-    "atterdees": {
+    "attendees": {
       "type": "string",
       "required": true
     },
