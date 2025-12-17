@@ -1,37 +1,49 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Filter, X } from "lucide-react";
 import { AnimatedSection } from "@/components/animations/animated-section";
 import { EventCard } from "@/components/event-card";
-import { eventsData, FeaturedEvent } from "@/components/featured-event";
+import { FeaturedEvent } from "@/components/featured-event"; // Remove eventsData import
+import { getEvents } from "@/lib/strapi"; // Import Event type
+import { Event } from "@/types";
 
-// Sample events data - replace with your actual events
 export default function Events() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [laoding, setLaoding] = useState(true);
+  const [events, setEvents] = useState<Event[]>([]); // Now no conflict
+  const [loading, setLoading] = useState(true); // Fixed typo: laoding -> loading
 
-
-  // useEffect(() => {
-  //   async function fetchEvents() {
-  //     try {
-  //       const data = await getEvents();
-  //       setEvents(data);
-  //     } catch (error) {
-  //       console.error('Error fetching events:', error);
-  //     } finally {
-  //       setLaoding(false);
-  //     }
-  //   }, [])
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        setLoading(true);
+        const data = await getEvents();
+        console.log("Events are : ", data);
+        setEvents(data); // This should work now
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchEvents()
+  }, [])
 
   const categories = ["All", "Art", "Film", "Music", "Festival"];
-  const featuredEvent = eventsData.find(e => e.featured);
+  const featuredEvent = events.find(e => e.featured);
 
   const filteredEvents = selectedCategory === "All"
-    ? eventsData
-    : eventsData.filter(e => e.category === selectedCategory);
+    ? events.filter(e => !e.featured) // Exclude featured from main list
+    : events.filter(e => e.category === selectedCategory && !e.featured);
+
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <div className="text-2xl text-gray-600">Loading events...</div>
+      </div>
+    );
+  }
 
   return (
     <section className="w-full min-h-screen bg-white text-black max-w-5xl mx-auto px-8">
@@ -88,11 +100,17 @@ export default function Events() {
 
       {/* Events Grid */}
       <div className="max-w-7xl mx-auto px-6 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredEvents.map((event, index) => (
-            <EventCard key={event.id} event={event} index={index} />
-          ))}
-        </div>
+        {filteredEvents.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredEvents.map((event, index) => (
+              <EventCard key={event.id} event={event} index={index} loading={loading} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-gray-500">
+            No events found in this category.
+          </div>
+        )}
       </div>
 
       {/* CTA Section */}
