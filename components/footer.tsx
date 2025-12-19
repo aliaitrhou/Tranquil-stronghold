@@ -7,21 +7,13 @@ const Footer = () => {
   return (
     <footer className="w-full text-neutral-500 text-sm p-6 bg-gray-50 border-t border-gray-400/50">
       {/* <div className='w-full mb-6 bg-gradient-to-r from-white via-neutral-300 to-white h-[2px]'></div> */}
-      <div className='max-w-4xl mx-auto pt-4 flex flex-row items-cente justify-between'>
+      <div className='max-w-4xl mx-auto pt-4 flex flex-col md:flex-row items-center justify-between gap-2'>
         <p className="text-center text-xs">
           &copy; {new Date().getFullYear()} Steadfast Haven. All rights reserved.
         </p>
 
-        <div className="text-xs flex items-center sm:justify-start gap-1 sm:gap-2">
-          <Link href="/privacy" className="hover:text-black transition-colors">
-            Privacy Policy
-          </Link>|
-          <Link href="/terms" className="hover:text-black transition-colors">
-            Terms of Service
-          </Link>
-        </div>
         <p className="text-center text-xs">
-          3932 S Perkins Rd 3932 s, Memphis, TN 38118, USA
+          119 Racine St., Suite 102, Memphis, TN 38111
         </p>
       </div>
     </footer>
