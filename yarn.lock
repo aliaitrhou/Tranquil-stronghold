@@ -961,6 +961,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^7.0.11":
+  version: 7.0.11
+  resolution: "nodemailer@npm:7.0.11"
+  checksum: 02940a5a620e219522c049f54f69af7abdc99c2ec168f592d3c67e26980a9857d7c45c65989cbd835af2c0ffabc66c20198aff484197566385594b2653069cb8
+  languageName: node
+  linkType: hard
+
 "picocolors@npm:^1.0.0, picocolors@npm:^1.1.1":
   version: 1.1.1
   resolution: "picocolors@npm:1.1.1"
@@ -1130,6 +1137,7 @@ __metadata:
     framer-motion: ^12.23.24
     lucide-react: ^0.553.0
     next: 15.5.6
+    nodemailer: ^7.0.11
     react: 19.1.0
     react-dom: 19.1.0
     react-icons: ^5.5.0
