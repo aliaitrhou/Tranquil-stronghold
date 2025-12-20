@@ -37,13 +37,6 @@ export default function Events() {
     ? events.filter(e => !e.featured) // Exclude featured from main list
     : events.filter(e => e.category === selectedCategory && !e.featured);
 
-  if (loading) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <div className="text-2xl text-gray-600">Loading events...</div>
-      </div>
-    );
-  }
 
   return (
     <section className="w-full min-h-screen bg-white text-black max-w-5xl mx-auto px-8">
