@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { Film, Music, Palette, Play, ExternalLink, Award, Users, Heart } from "lucide-react";
+import { Play, Award } from "lucide-react";
 import { AnimatedWorkSection } from "@/components/animations/animated-work-section";
 import { Project } from "@/types";
 import { ProjectCard } from "@/components/project-card";
@@ -14,8 +14,12 @@ const FeaturedProject = ({ project }: { project: Project }) => {
     <AnimatedWorkSection delay={0.2} classNames="w-full">
       <div className="relative bg-gradient-to-br from-blue-950 via-blue-800 to-blue-900 rounded-3xl overflow-hidden shadow-xl min-h-[500px] flex items-center">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-300 rounded-full -ml-24 -mb-24" />
+          {/* <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full -mr-32 -mt-32" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-red-700 rounded-full -ml-24 -mb-24" /> */}
+        </div>
+        <div>
+
+        lksdjfkldsajf
         </div>
         <div className="absolute inset-0 opacity-30">
           <img

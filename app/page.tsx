@@ -30,11 +30,12 @@ export default function Home() {
   const [play, setPlay] = useState(false);
   const [showRocket, setShowRocket] = useState(true);
   const [cards, setCards] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadCards() {
       try {
+        setLoading(true);
         const data = await getHomeCards();
         console.log("Fetched cards:", data);
         setCards(data);

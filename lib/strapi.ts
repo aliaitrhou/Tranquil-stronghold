@@ -1,245 +1,4 @@
-// const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-//
-// interface StrapiResponse<T> {
-//   data: T;
-//   meta: {
-//     pagination?: {
-//       page: number;
-//       pageSize: number;
-//       pageCount: number;
-//       total: number;
-//     };
-//   };
-// }
-//
-// interface StrapiItem {
-//   id: number;
-//   attributes: any;
-// }
-//
-// // Helper to get image URL
-// export function getStrapiMedia(url: string | null): string {
-//   if (!url) return '';
-//   if (url.startsWith('http')) return url;
-//   return `${STRAPI_URL}${url}`;
-// }
-//
-// // Generic fetch function
-// async function fetchAPI<T>(
-//   path: string,
-//   options: RequestInit = {}
-// ): Promise<T> {
-//   const defaultOptions: RequestInit = {
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     cache: 'no-store', // For dynamic data, use 'force-cache' for static
-//   };
-//
-//   const mergedOptions = {
-//     ...defaultOptions,
-//     ...options,
-//     headers: {
-//       ...defaultOptions.headers,
-//       ...options.headers,
-//     },
-//   };
-//
-//   const url = `${STRAPI_URL}/api${path}`;
-//
-//   try {
-//     const response = await fetch(url, mergedOptions);
-//
-//     if (!response.ok) {
-//       throw new Error(`Strapi API error: ${response.status}`);
-//     }
-//
-//     return await response.json();
-//   } catch (error) {
-//     console.error('Error fetching from Strapi:', error);
-//     throw error;
-//   }
-// }
-//
-// // Get all events
-// export async function getEvents() {
-//   try {
-//     const response = await fetchAPI<StrapiResponse<StrapiItem[]>>(
-//       '/events?populate=*&sort=date:asc'
-//     );
-//
-//     if (!response.data || !Array.isArray(response.data)) {
-//       return [];
-//     }
-//
-//     return response.data.map((item) => {
-//       if (!item || !item.attributes) return null;
-//
-//       return {
-//         id: item.id,
-//         ...item.attributes,
-//         image: getStrapiMedia(item.attributes.image?.data?.attributes?.url),
-//       };
-//     }).filter(Boolean);
-//   } catch (error) {
-//     console.error('Error fetching events:', error);
-//     return [];
-//   }
-// }
-//
-// // Get single event
-// export async function getEvent(id: number) {
-//   try {
-//     const response = await fetchAPI<StrapiResponse<StrapiItem>>(
-//       `/events/${id}?populate=*`
-//     );
-//
-//     if (!response.data || !response.data.attributes) {
-//       return null;
-//     }
-//
-//     return {
-//       id: response.data.id,
-//       ...response.data.attributes,
-//       image: getStrapiMedia(response.data.attributes.image?.data?.attributes?.url),
-//     };
-//   } catch (error) {
-//     console.error(`Error fetching event ${id}:`, error);
-//     return null;
-//   }
-// }
-//
-// // Get all projects
-// export async function getProjects() {
-//   try {
-//     const response = await fetchAPI<StrapiResponse<StrapiItem[]>>(
-//       '/projects?populate=*&sort=createdAt:desc'
-//     );
-//
-//     if (!response.data || !Array.isArray(response.data)) {
-//       return [];
-//     }
-//
-//     return response.data.map((item) => {
-//       if (!item || !item.attributes) return null;
-//
-//       return {
-//         id: item.id,
-//         ...item.attributes,
-//         image: getStrapiMedia(item.attributes.image?.data?.attributes?.url),
-//         tags: item.attributes.tags?.map((tag: any) => tag.name) || [],
-//       };
-//     }).filter(Boolean);
-//   } catch (error) {
-//     console.error('Error fetching projects:', error);
-//     return [];
-//   }
-// }
-//
-// // Get single project
-// export async function getProject(id: number) {
-//   try {
-//     const response = await fetchAPI<StrapiResponse<StrapiItem>>(
-//       `/projects/${id}?populate=*`
-//     );
-//
-//     if (!response.data || !response.data.attributes) {
-//       return null;
-//     }
-//
-//     return {
-//       id: response.data.id,
-//       ...response.data.attributes,
-//       image: getStrapiMedia(response.data.attributes.image?.data?.attributes?.url),
-//       tags: response.data.attributes.tags?.map((tag: any) => tag.name) || [],
-//     };
-//   } catch (error) {
-//     console.error(`Error fetching project ${id}:`, error);
-//     return null;
-//   }
-// }
-//
-// // Get all home cards
-// export async function getHomeCards() {
-//   try {
-//     const response = await fetchAPI<StrapiResponse<StrapiItem[]>>(
-//       '/home-cards?populate=*&sort=cardId:asc'
-//     );
-//
-//     if (!response.data || !Array.isArray(response.data)) {
-//       return [];
-//     }
-//
-//     return response.data.map((item) => {
-//       if (!item || !item.attributes) return null;
-//
-//       return {
-//         id: item.id,
-//         ...item.attributes,
-//         image: getStrapiMedia(item.attributes.image?.data?.attributes?.url),
-//       };
-//     }).filter(Boolean);
-//   } catch (error) {
-//     console.error('Error fetching home cards:', error);
-//     return [];
-//   }
-// }
-//
-// // Get featured events
-// export async function getFeaturedEvents() {
-//   try {
-//     const response = await fetchAPI<StrapiResponse<StrapiItem[]>>(
-//       '/events?populate=*&filters[featured][$eq]=true&sort=date:asc'
-//     );
-//
-//     if (!response.data || !Array.isArray(response.data)) {
-//       return [];
-//     }
-//
-//     return response.data.map((item) => {
-//       if (!item || !item.attributes) return null;
-//
-//       return {
-//         id: item.id,
-//         ...item.attributes,
-//         image: getStrapiMedia(item.attributes.image?.data?.attributes?.url),
-//       };
-//     }).filter(Boolean);
-//   } catch (error) {
-//     console.error('Error fetching featured events:', error);
-//     return [];
-//   }
-// }
-//
-// // Get featured projects
-// export async function getFeaturedProjects() {
-//   try {
-//     const response = await fetchAPI<StrapiResponse<StrapiItem[]>>(
-//       '/projects?populate=*&filters[featured][$eq]=true&sort=createdAt:desc'
-//     );
-//
-//     if (!response.data || !Array.isArray(response.data)) {
-//       return [];
-//     }
-//
-//     return response.data.map((item) => {
-//       if (!item || !item.attributes) return null;
-//
-//       return {
-//         id: item.id,
-//         ...item.attributes,
-//         image: getStrapiMedia(item.attributes.image?.data?.attributes?.url),
-//         tags: item.attributes.tags?.map((tag: any) => tag.name) || [],
-//       };
-//     }).filter(Boolean);
-//   } catch (error) {
-//     console.error('Error fetching featured projects:', error);
-//     return [];
-//   }
-// }
-
-
-// lib/strapi.ts
+import { Event, Project } from "@/types";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
@@ -313,7 +72,7 @@ async function fetchAPI<T>(
 }
 
 // Get all events
-export async function getEvents() {
+export async function getEvents(): Promise<Event[]> {
   try {
     const response = await fetchAPI<StrapiResponse<StrapiItem[]>>(
       '/events?populate=*&sort=date:asc'
@@ -323,14 +82,29 @@ export async function getEvents() {
       return [];
     }
 
-    return response.data.map((item) => {
+    return response.data.map((item): Event | null => {
       if (!item) return null;
 
+      // Handle image array from Strapi
+      const imageUrl = Array.isArray(item.image) && item.image.length > 0
+        ? item.image[0].url
+        : item.image?.url || null;
+
+      // Map Strapi response to Event type
       return {
-        ...item,
-        image: getStrapiMedia(item.image?.url),
+        id: item.id,
+        title: item.title || '',
+        date: item.date || '',
+        time: item.time || '',
+        location: item.location || '',
+        category: item.category || '',
+        description: item.description || '',
+        image: imageUrl ? getStrapiMedia(imageUrl) : '',
+        attendees: item.attendees || '',
+        featured: item.featured || false,
       };
-    }).filter(Boolean);
+    }).filter((event): event is Event => event !== null);
+
   } catch (error) {
     console.error('Error fetching events:', error);
     return [];
@@ -358,26 +132,84 @@ export async function getEvent(id: number) {
   }
 }
 
+
+// Get all events
+export async function getTeamMembers() {
+  try {
+    const res = await fetchAPI<StrapiResponse<StrapiItem[]>>('/team-members?populate=*');
+
+    const items = res?.data ?? [];
+
+    return items.map((item: any) => {
+      const img = item.image?.[0]; // first image in the array
+
+      return {
+        id: item.id,
+        name: item.name,
+        role: item.role,
+        instagram: item.instagram,
+        description: item.description,
+        image: img
+          ? getStrapiMedia(
+            img.formats?.medium?.url ||
+            img.formats?.small?.url ||
+            img.formats?.thumbnail?.url ||
+            img.url
+          )
+          : null,
+      };
+    });
+  } catch (err) {
+    console.error('Error fetching team members:', err);
+    return [];
+  }
+}
+
+
+
 // Get all projects
-export async function getProjects() {
+export async function getProjects(): Promise<Project[]> {
   try {
     const response = await fetchAPI<StrapiResponse<StrapiItem[]>>(
-      '/projects?populate=*&sort=createdAt:desc'
+      '/projects?populate=*&sort=createdAt:asc'
     );
 
     if (!response.data || !Array.isArray(response.data)) {
       return [];
     }
 
-    return response.data.map((item) => {
+    return response.data.map((item): Project | null => {
       if (!item) return null;
 
+      // Handle image array from Strapi (similar to events)
+      const imageUrl = Array.isArray(item.image) && item.image.length > 0
+        ? item.image[0].url
+        : item.image?.url || null;
+
+      // Map tags from component structure
+      const tags = Array.isArray(item.tags)
+        ? item.tags.map((tag: any) => tag.name || tag).filter(Boolean)
+        : [];
+
+      // Handle stats JSON field
+      const stats = item.stats && typeof item.stats === 'object'
+        ? item.stats
+        : {};
+
+      // Map Strapi response to Project type
       return {
-        ...item,
-        image: getStrapiMedia(item.image?.url),
-        tags: item.tags?.map((tag: any) => tag.name) || [],
+        id: item.id,
+        title: item.title || '',
+        description: item.description || '',
+        image: imageUrl ? getStrapiMedia(imageUrl) : '',
+        category: (item.category === 'Art' || item.category === 'Film' || item.category === 'Music')
+          ? item.category
+          : 'Art', // Default to 'Art' if category doesn't match
+        featured: item.featured || false,
+        tags: tags,
+        stats: stats,
       };
-    }).filter(Boolean);
+    }).filter((project): project is Project => project !== null);
   } catch (error) {
     console.error('Error fetching projects:', error);
     return [];
@@ -510,4 +342,3 @@ export async function getFeaturedProjects() {
     return [];
   }
 }
-

@@ -12,6 +12,7 @@ export type Event = {
 }
 
 export type Project = {
+  id: number;
   title: string;
   description: string;
   image: string;
@@ -26,7 +27,6 @@ export type TeamMember = {
   name: string;
   role: string;
   instagram?: string;
-  link: string;
-  about: string;
+  description: string;
   image: string;
 }

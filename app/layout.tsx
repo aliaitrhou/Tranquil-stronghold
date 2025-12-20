@@ -4,7 +4,6 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { inter } from "@/fonts";
 
-
 export const metadata: Metadata = {
   title: "Steadfast haven",
   description: "Empowering youth through art, film, and music.",
@@ -18,7 +17,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`relative flex flex-col bg-white min-h-screen text-black ${inter.className}`}
+        className={`relative flex flex-col bg-white min-h-screen text-black ${inter.className} tracking-wide`}
+        suppressHydrationWarning
       >
         <Header />
         <div className="absolute top-0 right-0 left-0 z-30 w-full h-20 opacity-65 blur-3xl pointer-events-none bg-gradient-to-r
