@@ -9,7 +9,7 @@ interface Props {
 
 const ContactLinkItem: React.FC<Props> = ({ title, icon, content, href }) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 py-4 px-6 hover:shadow-sm transition-all"> 
+    <div className="bg-white border border-gray-200 py-4 px-6 hover:shadow-sm transition-all"> 
         <div className="flex flex-col items-start gap-2">
             <div className="flex items-center gap-2">
                 <span className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
@@ -18,7 +18,7 @@ const ContactLinkItem: React.FC<Props> = ({ title, icon, content, href }) => {
                 <h3 className="font-bold text-gray-900 mb-1">{title}</h3>
             </div>
             <div> 
-            <a
+               <a
                 href={href} 
                 className="text-gray-600 hover:text-blue-700 text-sm transition-colors"
                 >

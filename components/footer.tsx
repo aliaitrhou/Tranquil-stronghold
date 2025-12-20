@@ -6,14 +6,13 @@ import { FaChevronRight } from 'react-icons/fa'
 const Footer = () => {
   return (
     <footer className="w-full text-neutral-500 text-sm p-6 bg-gray-50 border-t border-gray-400/50">
-      {/* <div className='w-full mb-6 bg-gradient-to-r from-white via-neutral-300 to-white h-[2px]'></div> */}
       <div className='max-w-4xl mx-auto pt-4 flex flex-col md:flex-row items-center justify-between gap-2'>
         <p className="text-center text-xs">
           &copy; {new Date().getFullYear()} Steadfast Haven. All rights reserved.
         </p>
 
         <p className="text-center text-xs">
-          119 Racine St., Suite 102, Memphis, TN 38111
+          Based in 119 Racine Street, Suite 102, Memphis, TN 38111
         </p>
       </div>
     </footer>
